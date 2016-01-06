@@ -1,0 +1,37 @@
+{
+  "name": "rx-to-async-iterator",
+  "version": "0.0.1",
+  "description": "Convert RxJS Observable streams to async iterators",
+  "main": "index.js",
+  "scripts": {
+    "files": "find . -name '*.js' ! -path './node_modules/*' ! -path './coverage/*'",
+    "test": "jshint `npm run -s files` && lintspaces -i js-comments -e .editorconfig `npm run -s files` && mocha",
+    "test-travis": "jshint `npm run -s files` && lintspaces -i js-comments -e .editorconfig `npm run -s files` && ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tangledfruit/rx-to-async-iterator.git"
+  },
+  "keywords": [
+    "RxJS",
+    "iterator",
+    "async"
+  ],
+  "author": "tangledfruit",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tangledfruit/rx-to-async-iterator/issues"
+  },
+  "homepage": "https://github.com/tangledfruit/rx-to-async-iterator#readme",
+  "dependencies": {
+    "rx": "^4.0.7"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "coveralls": "^2.11.6",
+    "istanbul": "^0.4.1",
+    "jshint": "^2.9.1-rc2",
+    "lintspaces-cli": "^0.1.1",
+    "mocha": "^2.3.4"
+  }
+}
