@@ -1,6 +1,14 @@
 'use strict';
 
-module.exports = function* (observable) {
+const Rx = require('rx');
+
+//------------------------------------------------------------------------------
+/**
+ * Accepts an RxJS Observable object and converts it to an ES6 generator
+ * function yielding the same results.
+ */
+
+const toAsyncIterator = module.exports = function* (observable) {
 
   // TO DO: Error validation.
 
@@ -89,4 +97,15 @@ module.exports = function* (observable) {
 
   }
 
+};
+
+//------------------------------------------------------------------------------
+/**
+ * Define a toAsyncIterator operator on Rx.Observable.
+ */
+
+Rx.Observable.prototype.toAsyncIterator = function () {
+
+  return toAsyncIterator(this);
+  
 };
