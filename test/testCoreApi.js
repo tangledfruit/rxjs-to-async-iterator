@@ -237,4 +237,50 @@ describe("rx-to-async-iterator", function () {
 
   });
 
+  //----------------------------------------------------------------------------
+
+  describe(".shouldBeEmpty", function () {
+
+    it("should succeed for Observable.empty", function* () {
+
+      yield Rx.Observable.empty().shouldBeEmpty();
+
+    });
+
+    //--------------------------------------------------------------------------
+
+    it("should throw if any onNext is generated", function* () {
+
+      let didThrow = false;
+
+      try {
+        yield Rx.Observable.just(42).shouldBeEmpty();
+      }
+      catch (err) {
+        expect(err.message).to.equal("Expected onCompleted notification, got onNext(42) instead");
+        didThrow = true;
+      }
+      expect(didThrow).to.equal(true);
+
+    });
+
+    //--------------------------------------------------------------------------
+
+    it("should throw if any onError is generated", function* () {
+
+      let didThrow = false;
+
+      try {
+        yield Rx.Observable.throw(new Error("blah blah")).shouldBeEmpty();
+      }
+      catch (err) {
+        expect(err.message).to.equal("blah blah");
+        didThrow = true;
+      }
+      expect(didThrow).to.equal(true);
+
+    });
+
+  });
+
 });

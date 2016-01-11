@@ -110,6 +110,14 @@ toAsyncIterator.prototype.shouldThrow = function* () {
 };
 
 //------------------------------------------------------------------------------
+
+Rx.Observable.prototype.shouldBeEmpty = function* () {
+
+  yield this.toAsyncIterator().shouldComplete();
+
+};
+
+//------------------------------------------------------------------------------
 /**
  * Define a toAsyncIterator operator on Rx.Observable.
  */
