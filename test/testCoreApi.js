@@ -4,8 +4,6 @@ require('co-mocha');
 const Rx = require('rx');
 const chai = require('chai');
 const expect = chai.expect;
-const chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
 
 const toAsyncIterator = require('../index');
 
