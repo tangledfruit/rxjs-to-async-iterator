@@ -75,7 +75,7 @@ const toAsyncIterator = module.exports = function* (observable) {
 toAsyncIterator.prototype.nextValue = function* () {
 
   let item = yield this.next();
-  if (item.value == doneSentinel) {
+  if (item.value === doneSentinel) {
     throw new Error("Expected onNext notification, got onCompleted instead");
   }
   return item.value;
@@ -103,7 +103,7 @@ toAsyncIterator.prototype.shouldThrow = function* () {
     return err.message;
   }
 
-  if (item.value == doneSentinel) {
+  if (item.value === doneSentinel) {
     throw new Error("Expected onError notification, got onCompleted instead");
   } else {
     throw new Error("Expected onError notification, got onNext(" + item.value + ") instead");
