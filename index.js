@@ -118,6 +118,18 @@ Rx.Observable.prototype.shouldBeEmpty = function* () {
 };
 
 //------------------------------------------------------------------------------
+
+Rx.Observable.prototype.shouldGenerateOneValue = function* () {
+
+  let iterator = this.toAsyncIterator();
+
+  let value = yield iterator.nextValue();
+  yield iterator.shouldComplete();
+
+  return value;
+};
+
+//------------------------------------------------------------------------------
 /**
  * Define a toAsyncIterator operator on Rx.Observable.
  */
