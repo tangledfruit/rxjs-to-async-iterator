@@ -24,17 +24,59 @@ describe("rx-to-async-iterator", function () {
 
   //----------------------------------------------------------------------------
 
-  it("can convert a simple Observable into a generator", function* () {
+  it("can convert an empty Observable into an async iterator", function* () {
+
+    const iter = Rx.Observable.empty().toAsyncIterator();
+
+    yield iter.shouldComplete();
+
+  });
+
+  //----------------------------------------------------------------------------
+
+  it("can convert an Observable that sends a single immediate value into an async iterator", function* () {
+
+    const iter = Rx.Observable.just("blah").toAsyncIterator();
+
+    expect(yield iter.nextValue()).to.equal("blah");
+    yield iter.shouldComplete();
+
+  });
+
+  //----------------------------------------------------------------------------
+
+  it("can convert an Observable that sends a single deferred value into an async iterator", function* () {
+
+    const iter = Rx.Observable.timer(200).take(1).toAsyncIterator();
+
+    expect(yield iter.nextValue()).to.equal(0);
+    yield iter.shouldComplete();
+
+  });
+
+  //----------------------------------------------------------------------------
+
+  it("can convert an Observable that sends several immediate values into an async iterator", function* () {
+
+    const iter = Rx.Observable.from([0, 1, 2]).toAsyncIterator();
+
+    expect(yield iter.nextValue()).to.equal(0);
+    expect(yield iter.nextValue()).to.equal(1);
+    expect(yield iter.nextValue()).to.equal(2);
+    yield iter.shouldComplete();
+
+  });
+
+  //----------------------------------------------------------------------------
+
+  it("can convert an Observable that sends several deferred values into an async iterator", function* () {
 
     const iter = Rx.Observable.timer(200, 100).take(3).toAsyncIterator();
 
-    expect(yield iter.next().value).to.equal(0);
-    expect(yield iter.next().value).to.equal(1);
-    expect(yield iter.next().value).to.equal(2);
-
-    const lastObs = yield iter.next();
-    expect(lastObs.value).to.equal(undefined);
-    expect(lastObs.done).to.equal(true);
+    expect(yield iter.nextValue()).to.equal(0);
+    expect(yield iter.nextValue()).to.equal(1);
+    expect(yield iter.nextValue()).to.equal(2);
+    yield iter.shouldComplete();
 
   });
 
