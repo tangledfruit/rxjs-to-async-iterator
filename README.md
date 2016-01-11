@@ -57,13 +57,14 @@ describe("some examples", function() {
 
     const iter = Rx.Observable.throw(new Error("expected failure")).toAsyncIterator();
 
-    expect(yield iter.shouldThrow()).to.equal("expected failure");
+    expect((yield iter.shouldThrow()).message).to.equal("expected failure");
 
   });
 
   it("has a shortcut form for an Observable that only generates an Error", function* () {
 
-    expect(yield Rx.Observable.throw(new Error("expect this fail")).shouldThrow()).to.equal("expect this fail");
+    const obs = Rx.Observable.throw(new Error("expect this fail"));
+    expect((yield obs.shouldThrow()).message).to.equal("expect this fail");
 
   });
 
