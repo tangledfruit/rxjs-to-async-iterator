@@ -237,4 +237,159 @@ describe("rx-to-async-iterator", function () {
 
   });
 
+  //----------------------------------------------------------------------------
+
+  describe(".shouldBeEmpty", function () {
+
+    it("should succeed for Observable.empty", function* () {
+
+      yield Rx.Observable.empty().shouldBeEmpty();
+
+    });
+
+    //--------------------------------------------------------------------------
+
+    it("should throw if any onNext is generated", function* () {
+
+      let didThrow = false;
+
+      try {
+        yield Rx.Observable.just(42).shouldBeEmpty();
+      }
+      catch (err) {
+        expect(err.message).to.equal("Expected onCompleted notification, got onNext(42) instead");
+        didThrow = true;
+      }
+      expect(didThrow).to.equal(true);
+
+    });
+
+    //--------------------------------------------------------------------------
+
+    it("should throw if any onError is generated", function* () {
+
+      let didThrow = false;
+
+      try {
+        yield Rx.Observable.throw(new Error("blah blah")).shouldBeEmpty();
+      }
+      catch (err) {
+        expect(err.message).to.equal("blah blah");
+        didThrow = true;
+      }
+      expect(didThrow).to.equal(true);
+
+    });
+
+  });
+
+  //----------------------------------------------------------------------------
+
+  describe(".shouldGenerateOneValue", function () {
+
+    it("should succeed if a single value is produced", function* () {
+
+      expect(yield Rx.Observable.just(47).shouldGenerateOneValue()).to.equal(47);
+
+    });
+
+    //--------------------------------------------------------------------------
+
+    it("should throw for Observable.empty", function* () {
+
+      let didThrow = false;
+
+      try {
+        yield Rx.Observable.empty().shouldGenerateOneValue();
+      }
+      catch (err) {
+        expect(err.message).to.equal("Expected onNext notification, got onCompleted instead");
+        didThrow = true;
+      }
+      expect(didThrow).to.equal(true);
+
+    });
+
+    //--------------------------------------------------------------------------
+
+    it("should throw if two onNext events are generated", function* () {
+
+      let didThrow = false;
+
+      try {
+        yield Rx.Observable.from([42, 45]).shouldGenerateOneValue();
+      }
+      catch (err) {
+        expect(err.message).to.equal("Expected onCompleted notification, got onNext(45) instead");
+        didThrow = true;
+      }
+      expect(didThrow).to.equal(true);
+
+    });
+
+    //--------------------------------------------------------------------------
+
+    it("should throw if any onError is generated", function* () {
+
+      let didThrow = false;
+
+      try {
+        yield Rx.Observable.throw(new Error("blah blah")).shouldBeEmpty();
+      }
+      catch (err) {
+        expect(err.message).to.equal("blah blah");
+        didThrow = true;
+      }
+      expect(didThrow).to.equal(true);
+
+    });
+
+  });
+
+  //----------------------------------------------------------------------------
+
+  describe(".shouldThrow", function () {
+
+    it("should succeed if an error is produced without any values", function* () {
+
+      expect(yield Rx.Observable.throw(new Error("expect this fail")).shouldThrow()).to.equal("expect this fail");
+
+    });
+
+    //--------------------------------------------------------------------------
+
+    it("should throw for Observable.empty", function* () {
+
+      let didThrow = false;
+
+      try {
+        yield Rx.Observable.empty().shouldThrow();
+      }
+      catch (err) {
+        expect(err.message).to.equal("Expected onError notification, got onCompleted instead");
+        didThrow = true;
+      }
+      expect(didThrow).to.equal(true);
+
+    });
+
+    //--------------------------------------------------------------------------
+
+    it("should throw if an onNext event is generated", function* () {
+
+      let didThrow = false;
+
+      try {
+        yield Rx.Observable.just(42).shouldThrow();
+      }
+      catch (err) {
+        expect(err.message).to.equal("Expected onError notification, got onNext(42) instead");
+        didThrow = true;
+      }
+      expect(didThrow).to.equal(true);
+
+    });
+
+  });
+
 });

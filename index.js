@@ -110,6 +110,36 @@ toAsyncIterator.prototype.shouldThrow = function* () {
 };
 
 //------------------------------------------------------------------------------
+
+Rx.Observable.prototype.shouldBeEmpty = function* () {
+
+  yield this.toAsyncIterator().shouldComplete();
+
+};
+
+//------------------------------------------------------------------------------
+
+Rx.Observable.prototype.shouldGenerateOneValue = function* () {
+
+  let iterator = this.toAsyncIterator();
+
+  let value = yield iterator.nextValue();
+  yield iterator.shouldComplete();
+
+  return value;
+
+};
+
+//------------------------------------------------------------------------------
+
+Rx.Observable.prototype.shouldThrow = function* () {
+
+  let err = yield this.toAsyncIterator().shouldThrow();
+  return err;
+
+};
+
+//------------------------------------------------------------------------------
 /**
  * Define a toAsyncIterator operator on Rx.Observable.
  */
