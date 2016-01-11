@@ -80,4 +80,26 @@ describe("rx-to-async-iterator", function () {
 
   });
 
+  //----------------------------------------------------------------------------
+
+  it("can convert an Observable that sends an error immediately into an async iterator", function* () {
+
+    const iter = Rx.Observable.throw(new Error("expected failure")).toAsyncIterator();
+
+    expect(yield iter.shouldThrow()).to.equal("expected failure");
+
+  });
+
+  //----------------------------------------------------------------------------
+
+  it("can convert an Observable that sends a deferred error into an async iterator", function* () {
+
+    const iter = Rx.Observable.concat(
+      Rx.Observable.timer(200).take(1).filter(() => false),
+      Rx.Observable.throw(new Error("deferred error"))).toAsyncIterator();
+
+    expect(yield iter.shouldThrow()).to.equal("deferred error");
+
+  });
+
 });

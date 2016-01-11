@@ -93,6 +93,26 @@ toAsyncIterator.prototype.shouldComplete = function* () {
 };
 
 //------------------------------------------------------------------------------
+
+toAsyncIterator.prototype.shouldThrow = function* () {
+
+  let item;
+
+  try {
+    item = yield this.next();
+  } catch (err) {
+    return err.message;
+  }
+
+  if (item.value == doneSentinel) {
+    throw new Error("Expected onError notification, got onCompleted instead");
+  } else {
+    throw new Error("Expected onError notification, got onNext(" + item.value + ") instead");
+  }
+
+};
+
+//------------------------------------------------------------------------------
 /**
  * Define a toAsyncIterator operator on Rx.Observable.
  */
