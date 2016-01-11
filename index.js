@@ -12,8 +12,6 @@ const doneSentinel = {};
 
 const toAsyncIterator = module.exports = function* (observable) {
 
-  // TO DO: Error validation.
-
   let isDone = false;
 
   let pendingCallback;
