@@ -392,4 +392,24 @@ describe("rx-to-async-iterator", function () {
 
   });
 
+  //----------------------------------------------------------------------------
+
+  it("should not get confused when observing two different Observables", function* () {
+
+    const b = new Rx.BehaviorSubject(51);
+    const iterB = b.toAsyncIterator();
+
+    expect(yield iterB.nextValue()).to.equal(51);
+
+    const tryToBeTricky = function() {
+      b.onNext(87);
+      return Rx.Observable.just("mumble");
+    };
+
+    expect(yield tryToBeTricky().shouldGenerateOneValue()).to.equal("mumble");
+
+    expect(yield iterB.nextValue()).to.equal(87);
+
+  });
+
 });
