@@ -21,7 +21,6 @@ const toAsyncIterator = module.exports = function* (observable) {
     // TO DO: Look for a more efficient queue implementation.
 
   const callTheCallback = function (callback, pendingValue) {
-// console.log("cbcb received err = ", pendingValue.err, "  value = ", pendingValue.value);
     if (pendingValue.value === doneSentinel) {
       isDone = true;
     }
@@ -29,9 +28,6 @@ const toAsyncIterator = module.exports = function* (observable) {
   };
 
   const produce = function (pendingValue) {
-
-// console.log("produce received err = ", pendingValue.err, "  value = ", pendingValue.value,
-//   pendingCallback ? " HAS PENDING CALLBACK" : "");
 
     if (pendingCallback) {
       const cb = pendingCallback;
