@@ -127,6 +127,16 @@ Rx.Observable.prototype.shouldGenerateOneValue = function* () {
   yield iterator.shouldComplete();
 
   return value;
+
+};
+
+//------------------------------------------------------------------------------
+
+Rx.Observable.prototype.shouldThrow = function* () {
+
+  let err = yield this.toAsyncIterator().shouldThrow();
+  return err;
+
 };
 
 //------------------------------------------------------------------------------
