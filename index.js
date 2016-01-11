@@ -87,7 +87,9 @@ toAsyncIterator.prototype.nextValue = function* () {
 toAsyncIterator.prototype.shouldComplete = function* () {
 
   let item = yield this.next();
-  return (item.value == doneSentinel);
+  if (item.value !== doneSentinel) {
+    throw new Error("Expected onCompleted notification, got onNext(" + item.value + ") instead");
+  }
 
 };
 

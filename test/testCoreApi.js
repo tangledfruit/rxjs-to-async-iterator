@@ -128,6 +128,51 @@ describe("rx-to-async-iterator", function () {
 
   //----------------------------------------------------------------------------
 
+  it("should throw if onNext is sent when onCompleted is expected", function* () {
+
+    const iter = Rx.Observable.just(99).toAsyncIterator();
+
+    let didThrow = false;
+    try {
+      yield iter.shouldComplete();
+        // NOTE: We can't use the typical expect(fn).to.throw() notation
+        // because yield wouldn't be available to that inner function.
+    }
+    catch (err) {
+      expect(err.message).to.equal("Expected onCompleted notification, got onNext(99) instead");
+      didThrow = true;
+    }
+
+    expect(didThrow).to.equal(true);
+
+  });
+
+  //----------------------------------------------------------------------------
+
+  it("should throw if onError is sent when onCompleted was expected", function* () {
+
+    const iter = Rx.Observable.concat(
+      Rx.Observable.just("blah"),
+      Rx.Observable.throw(new Error("whoops"))).toAsyncIterator();
+
+    expect(yield iter.nextValue()).to.equal("blah");
+
+    let didThrow = false;
+    try {
+      yield iter.shouldComplete();
+        // NOTE: We can't use the typical expect(fn).to.throw() notation
+        // because yield wouldn't be available to that inner function.
+    }
+    catch (err) {
+      expect(err.message).to.equal("whoops");
+      didThrow = true;
+    }
+    expect(didThrow).to.equal(true);
+
+  });
+
+  //----------------------------------------------------------------------------
+
   it("can convert an Observable that sends an error immediately into an async iterator", function* () {
 
     const iter = Rx.Observable.throw(new Error("expected failure")).toAsyncIterator();
