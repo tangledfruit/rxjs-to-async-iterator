@@ -53,10 +53,6 @@ const toAsyncIterator = module.exports = function* (observable) {
 
   const consumeViaCallback = function () {
 
-    if (pendingCallback) {
-      throw new Error("waitThenConsume called when callback already present");
-    }
-
     return function (cb) {
       let item = pendingValues.shift();
       if (item === undefined) {
