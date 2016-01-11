@@ -96,7 +96,7 @@ toAsyncIterator.prototype.shouldThrow = function* () {
   try {
     item = yield this.next();
   } catch (err) {
-    return err.message;
+    return err;
   }
 
   if (item.value === doneSentinel) {

@@ -175,7 +175,7 @@ describe("rx-to-async-iterator", function () {
 
     const iter = Rx.Observable.throw(new Error("expected failure")).toAsyncIterator();
 
-    expect(yield iter.shouldThrow()).to.equal("expected failure");
+    expect((yield iter.shouldThrow()).message).to.equal("expected failure");
 
   });
 
@@ -187,7 +187,7 @@ describe("rx-to-async-iterator", function () {
       Rx.Observable.timer(200).take(1).filter(() => false),
       Rx.Observable.throw(new Error("deferred error"))).toAsyncIterator();
 
-    expect(yield iter.shouldThrow()).to.equal("deferred error");
+    expect((yield iter.shouldThrow()).message).to.equal("deferred error");
 
   });
 
@@ -350,9 +350,11 @@ describe("rx-to-async-iterator", function () {
 
   describe(".shouldThrow", function () {
 
-    it("should succeed if an error is produced without any values", function* () {
+    it("should provide access to the original Error object that was thrown", function* () {
 
-      expect(yield Rx.Observable.throw(new Error("expect this fail")).shouldThrow()).to.equal("expect this fail");
+      const myError = new Error("this is what we throw");
+
+      expect(yield Rx.Observable.throw(myError).shouldThrow()).to.equal(myError);
 
     });
 
