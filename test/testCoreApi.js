@@ -7,7 +7,6 @@ const expect = chai.expect;
 
 const toAsyncIterator = require('../index');
 
-//------------------------------------------------------------------------------
 
 describe("rx-to-async-iterator", function () {
 
@@ -16,11 +15,11 @@ describe("rx-to-async-iterator", function () {
       // WARNING: We don't test this API independently. It might go away.
   });
 
+
   it("should patch Rx.Observable to add toAsyncIterator operator", function () {
     expect(Rx.Observable.prototype.toAsyncIterator).to.be.a('function');
   });
 
-  //----------------------------------------------------------------------------
 
   it("can convert an empty Observable into an async iterator", function* () {
 
@@ -30,7 +29,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("can convert an Observable that sends a single immediate value into an async iterator", function* () {
 
@@ -41,7 +39,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("can convert an Observable that sends a single deferred value into an async iterator", function* () {
 
@@ -52,7 +49,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("should throw if onCompleted is sent when onNext was expected", function* () {
 
@@ -74,7 +70,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("should throw if onError is sent when onNext was expected", function* () {
 
@@ -98,7 +93,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("can convert an Observable that sends several immediate values into an async iterator", function* () {
 
@@ -111,7 +105,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("can convert an Observable that sends several deferred values into an async iterator", function* () {
 
@@ -124,7 +117,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("should throw if onNext is sent when onCompleted is expected", function* () {
 
@@ -145,7 +137,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("should throw if onError is sent when onCompleted was expected", function* () {
 
@@ -169,7 +160,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("can convert an Observable that sends an error immediately into an async iterator", function* () {
 
@@ -179,7 +169,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("can convert an Observable that sends a deferred error into an async iterator", function* () {
 
@@ -191,7 +180,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("should throw if onNext is sent when onError is expected", function* () {
 
@@ -214,7 +202,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("should throw if onCompleted is sent when onError is expected", function* () {
 
@@ -237,7 +224,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   describe(".shouldBeEmpty", function () {
 
@@ -247,7 +233,6 @@ describe("rx-to-async-iterator", function () {
 
     });
 
-    //--------------------------------------------------------------------------
 
     it("should throw if any onNext is generated", function* () {
 
@@ -264,7 +249,6 @@ describe("rx-to-async-iterator", function () {
 
     });
 
-    //--------------------------------------------------------------------------
 
     it("should throw if any onError is generated", function* () {
 
@@ -283,7 +267,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   describe(".shouldGenerateOneValue", function () {
 
@@ -293,7 +276,6 @@ describe("rx-to-async-iterator", function () {
 
     });
 
-    //--------------------------------------------------------------------------
 
     it("should throw for Observable.empty", function* () {
 
@@ -310,7 +292,6 @@ describe("rx-to-async-iterator", function () {
 
     });
 
-    //--------------------------------------------------------------------------
 
     it("should throw if two onNext events are generated", function* () {
 
@@ -327,7 +308,6 @@ describe("rx-to-async-iterator", function () {
 
     });
 
-    //--------------------------------------------------------------------------
 
     it("should throw if any onError is generated", function* () {
 
@@ -346,7 +326,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   describe(".shouldThrow", function () {
 
@@ -358,7 +337,6 @@ describe("rx-to-async-iterator", function () {
 
     });
 
-    //--------------------------------------------------------------------------
 
     it("should throw for Observable.empty", function* () {
 
@@ -375,7 +353,6 @@ describe("rx-to-async-iterator", function () {
 
     });
 
-    //--------------------------------------------------------------------------
 
     it("should throw if an onNext event is generated", function* () {
 
@@ -394,7 +371,6 @@ describe("rx-to-async-iterator", function () {
 
   });
 
-  //----------------------------------------------------------------------------
 
   it("should not get confused when observing two different Observables", function* () {
 

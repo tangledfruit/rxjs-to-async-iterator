@@ -4,7 +4,7 @@ const Rx = require('rx');
 
 const doneSentinel = {};
 
-//------------------------------------------------------------------------------
+
 /**
  * Accepts an RxJS Observable object and converts it to an ES6 generator
  * function yielding the same results.
@@ -64,7 +64,6 @@ const toAsyncIterator = module.exports = function* (observable) {
 
 };
 
-//------------------------------------------------------------------------------
 
 toAsyncIterator.prototype.nextValue = function* () {
 
@@ -76,7 +75,6 @@ toAsyncIterator.prototype.nextValue = function* () {
 
 };
 
-//------------------------------------------------------------------------------
 
 toAsyncIterator.prototype.shouldComplete = function* () {
 
@@ -87,7 +85,6 @@ toAsyncIterator.prototype.shouldComplete = function* () {
 
 };
 
-//------------------------------------------------------------------------------
 
 toAsyncIterator.prototype.shouldThrow = function* () {
 
@@ -107,7 +104,6 @@ toAsyncIterator.prototype.shouldThrow = function* () {
 
 };
 
-//------------------------------------------------------------------------------
 
 Rx.Observable.prototype.shouldBeEmpty = function* () {
 
@@ -115,7 +111,6 @@ Rx.Observable.prototype.shouldBeEmpty = function* () {
 
 };
 
-//------------------------------------------------------------------------------
 
 Rx.Observable.prototype.shouldGenerateOneValue = function* () {
 
@@ -128,7 +123,6 @@ Rx.Observable.prototype.shouldGenerateOneValue = function* () {
 
 };
 
-//------------------------------------------------------------------------------
 
 Rx.Observable.prototype.shouldThrow = function* () {
 
@@ -137,7 +131,7 @@ Rx.Observable.prototype.shouldThrow = function* () {
 
 };
 
-//------------------------------------------------------------------------------
+
 /**
  * Define a toAsyncIterator operator on Rx.Observable.
  */
