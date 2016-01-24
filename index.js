@@ -18,14 +18,14 @@ const toAsyncIterator = module.exports = function* (observable) {
   let pendingValues = [];
     // TO DO: Look for a more efficient queue implementation.
 
-  const callTheCallback = function (callback, pendingValue) {
+  const callTheCallback = (callback, pendingValue) => {
     if (pendingValue.value === doneSentinel) {
       isDone = true;
     }
     callback(pendingValue.err, pendingValue.value);
   };
 
-  const produce = function (pendingValue) {
+  const produce = pendingValue => {
 
     if (pendingCallback) {
       const cb = pendingCallback;
@@ -38,16 +38,16 @@ const toAsyncIterator = module.exports = function* (observable) {
   };
 
   const subscriptionHandle = observable.subscribe(
-    (value) => produce({err: null, value: value}),
-    (err) => produce({err: err, value: null}),
+    value => produce({err: null, value: value}),
+    err => produce({err: err, value: null}),
     () => produce({err: null, value: doneSentinel}));
 
   // TO DO: What do we do with subscriptionHandle?
   // IOW, how to detect if client loses interest?
 
-  const consumeViaCallback = function () {
+  const consumeViaCallback = () => {
 
-    return function (cb) {
+    return cb => {
       let item = pendingValues.shift();
       if (item === undefined) {
         pendingCallback = cb;

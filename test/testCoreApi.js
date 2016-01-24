@@ -8,15 +8,14 @@ const expect = chai.expect;
 const toAsyncIterator = require('../index');
 
 
-describe("rx-to-async-iterator", function () {
+describe("rx-to-async-iterator", () => {
 
-  it("should be defined as a function", function () {
+  it("should be defined as a function", () => {
     expect(toAsyncIterator).to.be.a('function');
       // WARNING: We don't test this API independently. It might go away.
   });
 
-
-  it("should patch Rx.Observable to add toAsyncIterator operator", function () {
+  it("should patch Rx.Observable to add toAsyncIterator operator", () => {
     expect(Rx.Observable.prototype.toAsyncIterator).to.be.a('function');
   });
 
@@ -24,7 +23,6 @@ describe("rx-to-async-iterator", function () {
   it("can convert an empty Observable into an async iterator", function* () {
 
     const iter = Rx.Observable.empty().toAsyncIterator();
-
     yield iter.shouldComplete();
 
   });
@@ -225,7 +223,7 @@ describe("rx-to-async-iterator", function () {
   });
 
 
-  describe(".shouldBeEmpty", function () {
+  describe(".shouldBeEmpty", () => {
 
     it("should succeed for Observable.empty", function* () {
 
@@ -268,7 +266,7 @@ describe("rx-to-async-iterator", function () {
   });
 
 
-  describe(".shouldGenerateOneValue", function () {
+  describe(".shouldGenerateOneValue", () => {
 
     it("should succeed if a single value is produced", function* () {
 
@@ -327,7 +325,7 @@ describe("rx-to-async-iterator", function () {
   });
 
 
-  describe(".shouldThrow", function () {
+  describe(".shouldThrow", () => {
 
     it("should provide access to the original Error object that was thrown", function* () {
 
