@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/tangledfruit/rx-to-async-iterator#readme",
   "dependencies": {
-    "rx": "4.0.7"
+    "rx": "4.0.8"
   },
   "devDependencies": {
     "chai": "3.5.0",
