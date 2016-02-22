@@ -23,8 +23,8 @@
     "url": "https://github.com/tangledfruit/rx-to-async-iterator/issues"
   },
   "homepage": "https://github.com/tangledfruit/rx-to-async-iterator#readme",
-  "dependencies": {
-    "rx": "4.0.8"
+  "peerDependencies": {
+    "rx": ">=4.0.7 <5"
   },
   "devDependencies": {
     "chai": "3.5.0",
