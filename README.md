@@ -1,5 +1,5 @@
 # rx-to-async-iterator
-Convert RxJS Observable streams to async iterators [![Build Status](https://travis-ci.org/tangledfruit/rx-to-async-iterator.svg?branch=master)](https://travis-ci.org/tangledfruit/rx-to-async-iterator) [![Coverage Status](https://coveralls.io/repos/tangledfruit/rx-to-async-iterator/badge.svg?branch=master&service=github)](https://coveralls.io/github/tangledfruit/rx-to-async-iterator?branch=master)
+Convert RxJS Observable streams to async iterators [![Build Status](https://travis-ci.org/tangledfruit/rx-to-async-iterator.svg?branch=master)](https://travis-ci.org/tangledfruit/rx-to-async-iterator) [![Coverage Status](https://coveralls.io/repos/tangledfruit/rx-to-async-iterator/badge.svg?branch=master&service=github)](https://coveralls.io/github/tangledfruit/rx-to-async-iterator?branch=master) [![Docs](https://inch-ci.org/github/tangledfruit/rx-to-async-iterator.svg?branch=master)](https://inch-ci.org/github/tangledfruit/rx-to-async-iterator)
 
 This module is primarily intended for use in testing more complex RxJS-based async sequences, though that doesn't preclude other use cases.
 
