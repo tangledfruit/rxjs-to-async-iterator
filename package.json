@@ -23,7 +23,7 @@
     "url": "https://github.com/tangledfruit/rx-to-async-iterator/issues"
   },
   "homepage": "https://github.com/tangledfruit/rx-to-async-iterator#readme",
-  "peerDependencies": {
+  "dependencies": {
     "rx": ">=4.0.7 <5"
   },
   "devDependencies": {
@@ -34,10 +34,10 @@
     "istanbul": "0.4.2",
     "jshint": "2.9.1",
     "lintspaces-cli": "0.1.1",
-    "mocha": "2.4.5",
-    "rx": ">=4.0.7 <5"
+    "mocha": "2.4.5"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=4",
+    "npm": ">=3"
   }
 }
