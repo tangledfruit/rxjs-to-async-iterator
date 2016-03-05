@@ -39,5 +39,6 @@
   "engines": {
     "node": ">=4",
     "npm": ">=3"
-  }
+  },
+  "engineStrict": true
 }
