@@ -7,117 +7,85 @@ const expect = chai.expect;
 
 const toAsyncIterator = require('../index');
 
-
-describe("rx-to-async-iterator", () => {
-
-  it("should be defined as a function", () => {
+describe('rx-to-async-iterator', () => {
+  it('should be defined as a function', () => {
     expect(toAsyncIterator).to.be.a('function');
       // WARNING: We don't test this API independently. It might go away.
   });
 
-  it("should patch Rx.Observable to add toAsyncIterator operator", () => {
+  it('should patch Rx.Observable to add toAsyncIterator operator', () => {
     expect(Rx.Observable.prototype.toAsyncIterator).to.be.a('function');
   });
 
-
-  it("can convert an empty Observable into an async iterator", function* () {
-
+  it('can convert an empty Observable into an async iterator', function *() {
     const iter = Rx.Observable.empty().toAsyncIterator();
     yield iter.shouldComplete();
-
   });
 
-
-  it("can convert an Observable that sends a single immediate value into an async iterator", function* () {
-
-    const iter = Rx.Observable.just("blah").toAsyncIterator();
-
-    expect(yield iter.nextValue()).to.equal("blah");
+  it('can convert an Observable that sends a single immediate value into an async iterator', function *() {
+    const iter = Rx.Observable.just('blah').toAsyncIterator();
+    expect(yield iter.nextValue()).to.equal('blah');
     yield iter.shouldComplete();
-
   });
 
-
-  it("can convert an Observable that sends a single deferred value into an async iterator", function* () {
-
+  it('can convert an Observable that sends a single deferred value into an async iterator', function *() {
     const iter = Rx.Observable.timer(200).take(1).toAsyncIterator();
-
     expect(yield iter.nextValue()).to.equal(0);
     yield iter.shouldComplete();
-
   });
 
-
-  it("should throw if onCompleted is sent when onNext was expected", function* () {
-
-    const iter = Rx.Observable.just("blah").toAsyncIterator();
-
-    expect(yield iter.nextValue()).to.equal("blah");
+  it('should throw if onCompleted is sent when onNext was expected', function *() {
+    const iter = Rx.Observable.just('blah').toAsyncIterator();
+    expect(yield iter.nextValue()).to.equal('blah');
 
     let didThrow = false;
     try {
       yield iter.nextValue();
         // NOTE: We can't use the typical expect(fn).to.throw() notation
         // because yield wouldn't be available to that inner function.
-    }
-    catch (err) {
-      expect(err.message).to.equal("Expected onNext notification, got onCompleted instead");
+    } catch (err) {
+      expect(err.message).to.equal('Expected onNext notification, got onCompleted instead');
       didThrow = true;
     }
     expect(didThrow).to.equal(true);
-
   });
 
-
-  it("should throw if onError is sent when onNext was expected", function* () {
-
+  it('should throw if onError is sent when onNext was expected', function *() {
     const iter = Rx.Observable.concat(
-      Rx.Observable.just("blah"),
-      Rx.Observable.throw(new Error("whoops"))).toAsyncIterator();
+      Rx.Observable.just('blah'),
+      Rx.Observable.throw(new Error('whoops'))).toAsyncIterator();
 
-    expect(yield iter.nextValue()).to.equal("blah");
+    expect(yield iter.nextValue()).to.equal('blah');
 
     let didThrow = false;
     try {
       yield iter.nextValue();
         // NOTE: We can't use the typical expect(fn).to.throw() notation
         // because yield wouldn't be available to that inner function.
-    }
-    catch (err) {
-      expect(err.message).to.equal("whoops");
+    } catch (err) {
+      expect(err.message).to.equal('whoops');
       didThrow = true;
     }
     expect(didThrow).to.equal(true);
-
   });
 
-
-  it("can convert an Observable that sends several immediate values into an async iterator", function* () {
-
+  it('can convert an Observable that sends several immediate values into an async iterator', function *() {
     const iter = Rx.Observable.from([0, 1, 2]).toAsyncIterator();
-
     expect(yield iter.nextValue()).to.equal(0);
     expect(yield iter.nextValue()).to.equal(1);
     expect(yield iter.nextValue()).to.equal(2);
     yield iter.shouldComplete();
-
   });
 
-
-  it("can convert an Observable that sends several deferred values into an async iterator", function* () {
-
+  it('can convert an Observable that sends several deferred values into an async iterator', function *() {
     const iter = Rx.Observable.timer(200, 100).take(3).toAsyncIterator();
-
     expect(yield iter.nextValue()).to.equal(0);
     expect(yield iter.nextValue()).to.equal(1);
     expect(yield iter.nextValue()).to.equal(2);
     yield iter.shouldComplete();
-
   });
 
-
-  it("should throw if onNext is sent when onCompleted is expected", function* () {
-
+  it('should throw if onNext is sent when onCompleted is expected', function *() {
     const iter = Rx.Observable.just(99).toAsyncIterator();
 
     let didThrow = false;
@@ -125,64 +93,48 @@ describe("rx-to-async-iterator", () => {
       yield iter.shouldComplete();
         // NOTE: We can't use the typical expect(fn).to.throw() notation
         // because yield wouldn't be available to that inner function.
-    }
-    catch (err) {
-      expect(err.message).to.equal("Expected onCompleted notification, got onNext(99) instead");
+    } catch (err) {
+      expect(err.message).to.equal('Expected onCompleted notification, got onNext(99) instead');
       didThrow = true;
     }
 
     expect(didThrow).to.equal(true);
-
   });
 
-
-  it("should throw if onError is sent when onCompleted was expected", function* () {
-
+  it('should throw if onError is sent when onCompleted was expected', function *() {
     const iter = Rx.Observable.concat(
-      Rx.Observable.just("blah"),
-      Rx.Observable.throw(new Error("whoops"))).toAsyncIterator();
+      Rx.Observable.just('blah'),
+      Rx.Observable.throw(new Error('whoops'))).toAsyncIterator();
 
-    expect(yield iter.nextValue()).to.equal("blah");
+    expect(yield iter.nextValue()).to.equal('blah');
 
     let didThrow = false;
     try {
       yield iter.shouldComplete();
         // NOTE: We can't use the typical expect(fn).to.throw() notation
         // because yield wouldn't be available to that inner function.
-    }
-    catch (err) {
-      expect(err.message).to.equal("whoops");
+    } catch (err) {
+      expect(err.message).to.equal('whoops');
       didThrow = true;
     }
     expect(didThrow).to.equal(true);
-
   });
 
-
-  it("can convert an Observable that sends an error immediately into an async iterator", function* () {
-
-    const iter = Rx.Observable.throw(new Error("expected failure")).toAsyncIterator();
-
-    expect((yield iter.shouldThrow()).message).to.equal("expected failure");
-
+  it('can convert an Observable that sends an error immediately into an async iterator', function *() {
+    const iter = Rx.Observable.throw(new Error('expected failure')).toAsyncIterator();
+    expect((yield iter.shouldThrow()).message).to.equal('expected failure');
   });
 
-
-  it("can convert an Observable that sends a deferred error into an async iterator", function* () {
-
+  it('can convert an Observable that sends a deferred error into an async iterator', function *() {
     const iter = Rx.Observable.concat(
       Rx.Observable.timer(200).take(1).filter(() => false),
-      Rx.Observable.throw(new Error("deferred error"))).toAsyncIterator();
+      Rx.Observable.throw(new Error('deferred error'))).toAsyncIterator();
 
-    expect((yield iter.shouldThrow()).message).to.equal("deferred error");
-
+    expect((yield iter.shouldThrow()).message).to.equal('deferred error');
   });
 
-
-  it("should throw if onNext is sent when onError is expected", function* () {
-
+  it('should throw if onNext is sent when onError is expected', function *() {
     const iter = Rx.Observable.from([99, 402]).toAsyncIterator();
-
     expect(yield iter.nextValue()).to.equal(99);
 
     let didThrow = false;
@@ -190,21 +142,16 @@ describe("rx-to-async-iterator", () => {
       yield iter.shouldThrow();
         // NOTE: We can't use the typical expect(fn).to.throw() notation
         // because yield wouldn't be available to that inner function.
-    }
-    catch (err) {
-      expect(err.message).to.equal("Expected onError notification, got onNext(402) instead");
+    } catch (err) {
+      expect(err.message).to.equal('Expected onError notification, got onNext(402) instead');
       didThrow = true;
     }
 
     expect(didThrow).to.equal(true);
-
   });
 
-
-  it("should throw if onCompleted is sent when onError is expected", function* () {
-
+  it('should throw if onCompleted is sent when onError is expected', function *() {
     const iter = Rx.Observable.just(99).toAsyncIterator();
-
     expect(yield iter.nextValue()).to.equal(99);
 
     let didThrow = false;
@@ -212,180 +159,129 @@ describe("rx-to-async-iterator", () => {
       yield iter.shouldThrow();
         // NOTE: We can't use the typical expect(fn).to.throw() notation
         // because yield wouldn't be available to that inner function.
-    }
-    catch (err) {
-      expect(err.message).to.equal("Expected onError notification, got onCompleted instead");
+    } catch (err) {
+      expect(err.message).to.equal('Expected onError notification, got onCompleted instead');
       didThrow = true;
     }
 
     expect(didThrow).to.equal(true);
-
   });
 
-
-  describe(".shouldBeEmpty", () => {
-
-    it("should succeed for Observable.empty", function* () {
-
+  describe('.shouldBeEmpty', () => {
+    it('should succeed for Observable.empty', function *() {
       yield Rx.Observable.empty().shouldBeEmpty();
-
     });
 
-
-    it("should throw if any onNext is generated", function* () {
-
+    it('should throw if any onNext is generated', function *() {
       let didThrow = false;
 
       try {
         yield Rx.Observable.just(42).shouldBeEmpty();
-      }
-      catch (err) {
-        expect(err.message).to.equal("Expected onCompleted notification, got onNext(42) instead");
+      } catch (err) {
+        expect(err.message).to.equal('Expected onCompleted notification, got onNext(42) instead');
         didThrow = true;
       }
       expect(didThrow).to.equal(true);
-
     });
 
-
-    it("should throw if any onError is generated", function* () {
-
+    it('should throw if any onError is generated', function *() {
       let didThrow = false;
 
       try {
-        yield Rx.Observable.throw(new Error("blah blah")).shouldBeEmpty();
-      }
-      catch (err) {
-        expect(err.message).to.equal("blah blah");
+        yield Rx.Observable.throw(new Error('blah blah')).shouldBeEmpty();
+      } catch (err) {
+        expect(err.message).to.equal('blah blah');
         didThrow = true;
       }
       expect(didThrow).to.equal(true);
-
     });
-
   });
 
-
-  describe(".shouldGenerateOneValue", () => {
-
-    it("should succeed if a single value is produced", function* () {
-
+  describe('.shouldGenerateOneValue', () => {
+    it('should succeed if a single value is produced', function *() {
       expect(yield Rx.Observable.just(47).shouldGenerateOneValue()).to.equal(47);
-
     });
 
-
-    it("should throw for Observable.empty", function* () {
-
+    it('should throw for Observable.empty', function *() {
       let didThrow = false;
 
       try {
         yield Rx.Observable.empty().shouldGenerateOneValue();
-      }
-      catch (err) {
-        expect(err.message).to.equal("Expected onNext notification, got onCompleted instead");
+      } catch (err) {
+        expect(err.message).to.equal('Expected onNext notification, got onCompleted instead');
         didThrow = true;
       }
       expect(didThrow).to.equal(true);
-
     });
 
-
-    it("should throw if two onNext events are generated", function* () {
-
+    it('should throw if two onNext events are generated', function *() {
       let didThrow = false;
 
       try {
         yield Rx.Observable.from([42, 45]).shouldGenerateOneValue();
-      }
-      catch (err) {
-        expect(err.message).to.equal("Expected onCompleted notification, got onNext(45) instead");
+      } catch (err) {
+        expect(err.message).to.equal('Expected onCompleted notification, got onNext(45) instead');
         didThrow = true;
       }
       expect(didThrow).to.equal(true);
-
     });
 
-
-    it("should throw if any onError is generated", function* () {
-
+    it('should throw if any onError is generated', function *() {
       let didThrow = false;
 
       try {
-        yield Rx.Observable.throw(new Error("blah blah")).shouldBeEmpty();
-      }
-      catch (err) {
-        expect(err.message).to.equal("blah blah");
+        yield Rx.Observable.throw(new Error('blah blah')).shouldBeEmpty();
+      } catch (err) {
+        expect(err.message).to.equal('blah blah');
         didThrow = true;
       }
       expect(didThrow).to.equal(true);
-
     });
-
   });
 
-
-  describe(".shouldThrow", () => {
-
-    it("should provide access to the original Error object that was thrown", function* () {
-
-      const myError = new Error("this is what we throw");
-
+  describe('.shouldThrow', () => {
+    it('should provide access to the original Error object that was thrown', function *() {
+      const myError = new Error('this is what we throw');
       expect(yield Rx.Observable.throw(myError).shouldThrow()).to.equal(myError);
-
     });
 
-
-    it("should throw for Observable.empty", function* () {
-
+    it('should throw for Observable.empty', function *() {
       let didThrow = false;
 
       try {
         yield Rx.Observable.empty().shouldThrow();
-      }
-      catch (err) {
-        expect(err.message).to.equal("Expected onError notification, got onCompleted instead");
+      } catch (err) {
+        expect(err.message).to.equal('Expected onError notification, got onCompleted instead');
         didThrow = true;
       }
       expect(didThrow).to.equal(true);
-
     });
 
-
-    it("should throw if an onNext event is generated", function* () {
-
+    it('should throw if an onNext event is generated', function *() {
       let didThrow = false;
 
       try {
         yield Rx.Observable.just(42).shouldThrow();
-      }
-      catch (err) {
-        expect(err.message).to.equal("Expected onError notification, got onNext(42) instead");
+      } catch (err) {
+        expect(err.message).to.equal('Expected onError notification, got onNext(42) instead');
         didThrow = true;
       }
       expect(didThrow).to.equal(true);
-
     });
-
   });
 
-
-  it("should not get confused when observing two different Observables", function* () {
-
+  it('should not get confused when observing two different Observables', function *() {
     const b = new Rx.BehaviorSubject(51);
     const iterB = b.toAsyncIterator();
 
     expect(yield iterB.nextValue()).to.equal(51);
 
-    const tryToBeTricky = function() {
+    const tryToBeTricky = () => {
       b.onNext(87);
-      return Rx.Observable.just("mumble");
+      return Rx.Observable.just('mumble');
     };
 
-    expect(yield tryToBeTricky().shouldGenerateOneValue()).to.equal("mumble");
-
+    expect(yield tryToBeTricky().shouldGenerateOneValue()).to.equal('mumble');
     expect(yield iterB.nextValue()).to.equal(87);
-
   });
-
 });
