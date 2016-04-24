@@ -1,7 +1,7 @@
 {
-  "name": "rx-to-async-iterator",
-  "version": "1.1.6",
-  "description": "Convert RxJS Observable streams to async iterators",
+  "name": "rxjs-to-async-iterator",
+  "version": "2.0.0",
+  "description": "Convert RxJS Observable streams to async iterators (for RxJS 5+)",
   "main": "index.js",
   "scripts": {
     "files": "find . -name '*.js' ! -path './node_modules/*' ! -path './coverage/*'",
@@ -14,15 +14,16 @@
   },
   "keywords": [
     "RxJS",
+    "RxJS5",
     "iterator",
     "async"
   ],
   "author": "tangledfruit",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tangledfruit/rx-to-async-iterator/issues"
+    "url": "https://github.com/tangledfruit/rxjs-to-async-iterator/issues"
   },
-  "homepage": "https://github.com/tangledfruit/rx-to-async-iterator#readme",
+  "homepage": "https://github.com/tangledfruit/rxjs-to-async-iterator#readme",
   "dependencies": {
     "rx": ">=4.0.7 <5"
   },

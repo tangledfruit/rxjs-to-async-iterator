@@ -8,7 +8,7 @@ const expect = chai.expect;
 const toAsyncIterator = require('../index');
 
 
-describe("rx-to-async-iterator", () => {
+describe("rxjs-to-async-iterator", () => {
 
   it("should be defined as a function", () => {
     expect(toAsyncIterator).to.be.a('function');
