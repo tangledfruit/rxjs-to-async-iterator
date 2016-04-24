@@ -1,13 +1,14 @@
 # rx-to-async-iterator [![Build Status](https://travis-ci.org/tangledfruit/rx-to-async-iterator.svg?branch=master)](https://travis-ci.org/tangledfruit/rx-to-async-iterator) [![Coverage Status](https://coveralls.io/repos/tangledfruit/rx-to-async-iterator/badge.svg?branch=master&service=github)](https://coveralls.io/github/tangledfruit/rx-to-async-iterator?branch=master) [![Docs](https://inch-ci.org/github/tangledfruit/rx-to-async-iterator.svg?branch=master)](https://inch-ci.org/github/tangledfruit/rx-to-async-iterator) [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
 
+Convert RxJS Observable streams to async iterators
 
-Convert RxJS Observable streams to async iterators (for RxJS 4.x)
+**IMPORTANT:** This library only supports RxJS 4.x.
+
+**Looking for RxJS 5.0+ support?** Try  [rxjs-to-async-iterator](https://github.com/tangledfruit/rxjs-to-async-iterator). (Same name but replace 'rx' with 'rxjs'.)
 
 This module is primarily intended for use in testing more complex RxJS-based async sequences, though that doesn't preclude other use cases.
 
 It is intended for use with [mocha](https://www.npmjs.com/package/mocha) for testing as modified by [co-mocha](https://www.npmjs.com/package/co-mocha) for coroutine/generator support.
-
-A comparable library exists for RxJS 5.x at [rxjs-to-async-iterator](https://github.com/tangledfruit/rxjs-to-async-iterator). (Same name but replace 'rx' with 'rxjs'.)
 
 
 ## Installation
