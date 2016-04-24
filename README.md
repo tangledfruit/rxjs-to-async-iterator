@@ -21,7 +21,7 @@ npm install --save rxjs-to-async-iterator
 
 ```js
 require('co-mocha');
-const Rx = require('rx');
+const Rx = require('rxjs');
 const chai = require('chai');
 const expect = chai.expect;
 require ('to-async-iterator');
