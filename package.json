@@ -1,6 +1,6 @@
 {
   "name": "rxjs-to-async-iterator",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Convert RxJS Observable streams to async iterators (for RxJS 5.0+)",
   "main": "index.js",
   "scripts": {
