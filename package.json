@@ -1,7 +1,7 @@
 {
   "name": "rxjs-to-async-iterator",
   "version": "2.0.0",
-  "description": "Convert RxJS Observable streams to async iterators (for RxJS 5+)",
+  "description": "Convert RxJS Observable streams to async iterators (for RxJS 5.0+)",
   "main": "index.js",
   "scripts": {
     "files": "find . -name '*.js' ! -path './node_modules/*' ! -path './coverage/*'",
