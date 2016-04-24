@@ -31,32 +31,32 @@ describe("some examples", function() {
 
   it("can verify that an Observable generates a predetermined sequence of values", function* () {
 
-    const iter = Rx.Observable.from([42, 45]).toAsyncIterator();
+    const iter = Rx.Observable.of([42, 45]).toAsyncIterator();
 
     expect(yield iter.nextValue()).to.equal(42);
-      // Will throw if onError or onCompleted are produced.
+      // Will throw if error or complete are produced.
     expect(yield iter.nextValue()).to.equal(45);
 
     yield iter.shouldComplete();
-      // Will throw if onNext or onError are produced.
+      // Will throw if next or error are produced.
 
   });
 
   it("has a shortcut form for an Observable that produces a single value", function* () {
 
-    expect(yield Rx.Observable.just(47).shouldGenerateOneValue()).to.equal(47);
-      // Will throw if any sequence other than onNext(47), onCompleted() is produced.
+    expect(yield Rx.Observable.of(47).shouldGenerateOneValue()).to.equal(47);
+      // Will throw if any sequence other than next(47), complete() is produced.
 
   });
 
   it("has a shortcut form for an Observable that produces no values", function* () {
 
     expect(yield Rx.Observable.empty(47).shouldBeEmpty();
-      // Will throw if onNext or onError are produced.
+      // Will throw if next or error are produced.
 
   });
 
-  it("can verify that an Observable generates an error", function* () {
+    it("can verify that an Observable generates an error", function* () {
 
     const iter = Rx.Observable.throw(new Error("expected failure")).toAsyncIterator();
 

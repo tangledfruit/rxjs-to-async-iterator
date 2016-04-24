@@ -1,7 +1,7 @@
 'use strict';
 
 require('co-mocha');
-const Rx = require('rx');
+const Rx = require('rxjs');
 const chai = require('chai');
 const expect = chai.expect;
 
@@ -30,7 +30,7 @@ describe("rxjs-to-async-iterator", () => {
 
   it("can convert an Observable that sends a single immediate value into an async iterator", function* () {
 
-    const iter = Rx.Observable.just("blah").toAsyncIterator();
+    const iter = Rx.Observable.of("blah").toAsyncIterator();
 
     expect(yield iter.nextValue()).to.equal("blah");
     yield iter.shouldComplete();
@@ -48,9 +48,9 @@ describe("rxjs-to-async-iterator", () => {
   });
 
 
-  it("should throw if onCompleted is sent when onNext was expected", function* () {
+  it("should throw if complete is sent when next was expected", function* () {
 
-    const iter = Rx.Observable.just("blah").toAsyncIterator();
+    const iter = Rx.Observable.of("blah").toAsyncIterator();
 
     expect(yield iter.nextValue()).to.equal("blah");
 
@@ -61,7 +61,7 @@ describe("rxjs-to-async-iterator", () => {
         // because yield wouldn't be available to that inner function.
     }
     catch (err) {
-      expect(err.message).to.equal("Expected onNext notification, got onCompleted instead");
+      expect(err.message).to.equal("Expected next notification, got complete instead");
       didThrow = true;
     }
     expect(didThrow).to.equal(true);
@@ -69,10 +69,10 @@ describe("rxjs-to-async-iterator", () => {
   });
 
 
-  it("should throw if onError is sent when onNext was expected", function* () {
+  it("should throw if error is sent when next was expected", function* () {
 
     const iter = Rx.Observable.concat(
-      Rx.Observable.just("blah"),
+      Rx.Observable.of("blah"),
       Rx.Observable.throw(new Error("whoops"))).toAsyncIterator();
 
     expect(yield iter.nextValue()).to.equal("blah");
@@ -116,9 +116,9 @@ describe("rxjs-to-async-iterator", () => {
   });
 
 
-  it("should throw if onNext is sent when onCompleted is expected", function* () {
+  it("should throw if next is sent when complete is expected", function* () {
 
-    const iter = Rx.Observable.just(99).toAsyncIterator();
+    const iter = Rx.Observable.of(99).toAsyncIterator();
 
     let didThrow = false;
     try {
@@ -127,7 +127,7 @@ describe("rxjs-to-async-iterator", () => {
         // because yield wouldn't be available to that inner function.
     }
     catch (err) {
-      expect(err.message).to.equal("Expected onCompleted notification, got onNext(99) instead");
+      expect(err.message).to.equal("Expected complete notification, got next(99) instead");
       didThrow = true;
     }
 
@@ -136,10 +136,10 @@ describe("rxjs-to-async-iterator", () => {
   });
 
 
-  it("should throw if onError is sent when onCompleted was expected", function* () {
+  it("should throw if error is sent when complete was expected", function* () {
 
     const iter = Rx.Observable.concat(
-      Rx.Observable.just("blah"),
+      Rx.Observable.of("blah"),
       Rx.Observable.throw(new Error("whoops"))).toAsyncIterator();
 
     expect(yield iter.nextValue()).to.equal("blah");
@@ -179,7 +179,7 @@ describe("rxjs-to-async-iterator", () => {
   });
 
 
-  it("should throw if onNext is sent when onError is expected", function* () {
+  it("should throw if next is sent when error is expected", function* () {
 
     const iter = Rx.Observable.from([99, 402]).toAsyncIterator();
 
@@ -192,7 +192,7 @@ describe("rxjs-to-async-iterator", () => {
         // because yield wouldn't be available to that inner function.
     }
     catch (err) {
-      expect(err.message).to.equal("Expected onError notification, got onNext(402) instead");
+      expect(err.message).to.equal("Expected error notification, got next(402) instead");
       didThrow = true;
     }
 
@@ -201,9 +201,9 @@ describe("rxjs-to-async-iterator", () => {
   });
 
 
-  it("should throw if onCompleted is sent when onError is expected", function* () {
+  it("should throw if complete is sent when error is expected", function* () {
 
-    const iter = Rx.Observable.just(99).toAsyncIterator();
+    const iter = Rx.Observable.of(99).toAsyncIterator();
 
     expect(yield iter.nextValue()).to.equal(99);
 
@@ -214,7 +214,7 @@ describe("rxjs-to-async-iterator", () => {
         // because yield wouldn't be available to that inner function.
     }
     catch (err) {
-      expect(err.message).to.equal("Expected onError notification, got onCompleted instead");
+      expect(err.message).to.equal("Expected error notification, got complete instead");
       didThrow = true;
     }
 
@@ -232,15 +232,15 @@ describe("rxjs-to-async-iterator", () => {
     });
 
 
-    it("should throw if any onNext is generated", function* () {
+    it("should throw if any next is generated", function* () {
 
       let didThrow = false;
 
       try {
-        yield Rx.Observable.just(42).shouldBeEmpty();
+        yield Rx.Observable.of(42).shouldBeEmpty();
       }
       catch (err) {
-        expect(err.message).to.equal("Expected onCompleted notification, got onNext(42) instead");
+        expect(err.message).to.equal("Expected complete notification, got next(42) instead");
         didThrow = true;
       }
       expect(didThrow).to.equal(true);
@@ -248,7 +248,7 @@ describe("rxjs-to-async-iterator", () => {
     });
 
 
-    it("should throw if any onError is generated", function* () {
+    it("should throw if any error is generated", function* () {
 
       let didThrow = false;
 
@@ -270,7 +270,7 @@ describe("rxjs-to-async-iterator", () => {
 
     it("should succeed if a single value is produced", function* () {
 
-      expect(yield Rx.Observable.just(47).shouldGenerateOneValue()).to.equal(47);
+      expect(yield Rx.Observable.of(47).shouldGenerateOneValue()).to.equal(47);
 
     });
 
@@ -283,7 +283,7 @@ describe("rxjs-to-async-iterator", () => {
         yield Rx.Observable.empty().shouldGenerateOneValue();
       }
       catch (err) {
-        expect(err.message).to.equal("Expected onNext notification, got onCompleted instead");
+        expect(err.message).to.equal("Expected next notification, got complete instead");
         didThrow = true;
       }
       expect(didThrow).to.equal(true);
@@ -291,7 +291,7 @@ describe("rxjs-to-async-iterator", () => {
     });
 
 
-    it("should throw if two onNext events are generated", function* () {
+    it("should throw if two next events are generated", function* () {
 
       let didThrow = false;
 
@@ -299,7 +299,7 @@ describe("rxjs-to-async-iterator", () => {
         yield Rx.Observable.from([42, 45]).shouldGenerateOneValue();
       }
       catch (err) {
-        expect(err.message).to.equal("Expected onCompleted notification, got onNext(45) instead");
+        expect(err.message).to.equal("Expected complete notification, got next(45) instead");
         didThrow = true;
       }
       expect(didThrow).to.equal(true);
@@ -307,7 +307,7 @@ describe("rxjs-to-async-iterator", () => {
     });
 
 
-    it("should throw if any onError is generated", function* () {
+    it("should throw if any error is generated", function* () {
 
       let didThrow = false;
 
@@ -344,7 +344,7 @@ describe("rxjs-to-async-iterator", () => {
         yield Rx.Observable.empty().shouldThrow();
       }
       catch (err) {
-        expect(err.message).to.equal("Expected onError notification, got onCompleted instead");
+        expect(err.message).to.equal("Expected error notification, got complete instead");
         didThrow = true;
       }
       expect(didThrow).to.equal(true);
@@ -352,15 +352,15 @@ describe("rxjs-to-async-iterator", () => {
     });
 
 
-    it("should throw if an onNext event is generated", function* () {
+    it("should throw if an next event is generated", function* () {
 
       let didThrow = false;
 
       try {
-        yield Rx.Observable.just(42).shouldThrow();
+        yield Rx.Observable.of(42).shouldThrow();
       }
       catch (err) {
-        expect(err.message).to.equal("Expected onError notification, got onNext(42) instead");
+        expect(err.message).to.equal("Expected error notification, got next(42) instead");
         didThrow = true;
       }
       expect(didThrow).to.equal(true);
@@ -378,8 +378,8 @@ describe("rxjs-to-async-iterator", () => {
     expect(yield iterB.nextValue()).to.equal(51);
 
     const tryToBeTricky = function() {
-      b.onNext(87);
-      return Rx.Observable.just("mumble");
+      b.next(87);
+      return Rx.Observable.of("mumble");
     };
 
     expect(yield tryToBeTricky().shouldGenerateOneValue()).to.equal("mumble");
