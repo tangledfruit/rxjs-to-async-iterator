@@ -1,6 +1,6 @@
 'use strict';
 
-const Rx = require('rx');
+const Rx = require('rxjs');
 
 const doneSentinel = {};
 
@@ -69,7 +69,7 @@ toAsyncIterator.prototype.nextValue = function* () {
 
   let item = yield this.next();
   if (item.value === doneSentinel) {
-    throw new Error("Expected onNext notification, got onCompleted instead");
+    throw new Error("Expected next notification, got complete instead");
   }
   return item.value;
 
@@ -80,7 +80,7 @@ toAsyncIterator.prototype.shouldComplete = function* () {
 
   let item = yield this.next();
   if (item.value !== doneSentinel) {
-    throw new Error("Expected onCompleted notification, got onNext(" + item.value + ") instead");
+    throw new Error("Expected complete notification, got next(" + item.value + ") instead");
   }
 
 };
@@ -97,9 +97,9 @@ toAsyncIterator.prototype.shouldThrow = function* () {
   }
 
   if (item.value === doneSentinel) {
-    throw new Error("Expected onError notification, got onCompleted instead");
+    throw new Error("Expected error notification, got complete instead");
   } else {
-    throw new Error("Expected onError notification, got onNext(" + item.value + ") instead");
+    throw new Error("Expected error notification, got next(" + item.value + ") instead");
   }
 
 };
