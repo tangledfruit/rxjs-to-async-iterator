@@ -9,7 +9,7 @@ const doneSentinel = {};
  * function yielding the same results.
  */
 
-const toAsyncIterator = module.exports = function *(observable) {
+const toAsyncIterator = function *(observable) {
   let isDone = false;
 
   let pendingCallback;
