@@ -286,4 +286,40 @@ describe('rx-to-async-iterator', () => {
     expect(yield tryToBeTricky().shouldGenerateOneValue()).to.equal('mumble');
     expect(yield iterB.nextValue()).to.equal(87);
   });
+
+  describe('.unsubscribe', () => {
+    it('should be defined as a method on asyncIterator', () => {
+      const iter = Rx.Observable.just(99).toAsyncIterator();
+      expect(iter).to.respondTo('unsubscribe');
+    });
+
+    it('should throw if called before first yield', function *() {
+      const timerIter = Rx.Observable.timer(100).toAsyncIterator();
+      expect(() => timerIter.unsubscribe()).to.throw(/unsubscribing before first yield not allowed/);
+    });
+
+    it('should cause subscription to be dropped', function *() {
+      let timerCount = -1;
+
+      const countedTimer = Rx.Observable.timer(100, 100)
+        .tap(count => {
+          timerCount = count;
+        });
+
+      const timerIter = countedTimer.toAsyncIterator();
+      expect(yield timerIter.nextValue()).to.equal(0);
+      expect(yield timerIter.nextValue()).to.equal(1);
+      expect(yield timerIter.nextValue()).to.equal(2);
+      expect(timerCount).to.equal(2);
+
+      timerIter.unsubscribe();
+      expect(timerCount).to.equal(2);
+
+      yield Rx.Observable.timer(300).shouldGenerateOneValue();
+        // Ignore this. We're just sleeping past a couple of timer
+        // ticks.
+
+      expect(timerCount).to.equal(2);
+    });
+  });
 });
