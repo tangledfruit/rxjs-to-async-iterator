@@ -5,12 +5,14 @@ const Rx = require('rx');
 const chai = require('chai');
 const expect = chai.expect;
 
-const toAsyncIterator = require('../index');
+const taiValue = require('../index'); // ... has side-effect of adding toAsyncIterator operator
 
 describe('rx-to-async-iterator', () => {
-  it('should be defined as a function', () => {
-    expect(toAsyncIterator).to.be.a('function');
-      // WARNING: We don't test this API independently. It might go away.
+  it('should not export any value', () => {
+    expect(taiValue).to.deep.equal({});
+      // IMPORTANT: Change from v1.1.8. The previous syntax was unsupported
+      // and undocumented and it broke with Node 6.0, so I'm formally
+      // decomissioning it now.
   });
 
   it('should patch Rx.Observable to add toAsyncIterator operator', () => {
