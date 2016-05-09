@@ -5,12 +5,14 @@ const Rx = require('rxjs');
 const chai = require('chai');
 const expect = chai.expect;
 
-const toAsyncIterator = require('../index');
+const taiValue = require('../index'); // ... has side-effect of adding toAsyncIterator operator
 
 describe('rxjs-to-async-iterator', () => {
-  it('should be defined as a function', () => {
-    expect(toAsyncIterator).to.be.a('function');
-      // WARNING: We don't test this API independently. It might go away.
+  it('should not export any value', () => {
+    expect(taiValue).to.deep.equal({});
+      // IMPORTANT: Change from v2.0.2. The previous syntax was unsupported
+      // and undocumented and it broke with Node 6.0, so I'm formally
+      // decomissioning it now.
   });
 
   it('should patch Rx.Observable to add toAsyncIterator operator', () => {
@@ -282,5 +284,41 @@ describe('rxjs-to-async-iterator', () => {
 
     expect(yield tryToBeTricky().shouldGenerateOneValue()).to.equal('mumble');
     expect(yield iterB.nextValue()).to.equal(87);
+  });
+
+  describe('.unsubscribe', () => {
+    it('should be defined as a method on asyncIterator', () => {
+      const iter = Rx.Observable.of(99).toAsyncIterator();
+      expect(iter).to.respondTo('unsubscribe');
+    });
+
+    it('should throw if called before first yield', function *() {
+      const timerIter = Rx.Observable.timer(100).toAsyncIterator();
+      expect(() => timerIter.unsubscribe()).to.throw(/unsubscribing before first yield not allowed/);
+    });
+
+    it('should cause subscription to be dropped', function *() {
+      let timerCount = -1;
+
+      const countedTimer = Rx.Observable.timer(100, 100)
+        .do(count => {
+          timerCount = count;
+        });
+
+      const timerIter = countedTimer.toAsyncIterator();
+      expect(yield timerIter.nextValue()).to.equal(0);
+      expect(yield timerIter.nextValue()).to.equal(1);
+      expect(yield timerIter.nextValue()).to.equal(2);
+      expect(timerCount).to.equal(2);
+
+      timerIter.unsubscribe();
+      expect(timerCount).to.equal(2);
+
+      yield Rx.Observable.timer(300).shouldGenerateOneValue();
+        // Ignore this. We're just sleeping past a couple of timer
+        // ticks.
+
+      expect(timerCount).to.equal(2);
+    });
   });
 });
