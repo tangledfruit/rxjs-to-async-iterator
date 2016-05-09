@@ -39,6 +39,11 @@ describe('some examples', () => {
 
     yield iter.shouldComplete();
       // Will throw if onNext or onError are produced.
+
+    iter.unsubscribe();
+      // Use this if ending the test before the Observable terminates and you
+      // want to ensure proper resource cleanup. This is not necessary if you
+      // reach an onComplete or onError state in a successful test.
   });
 
   it('has a shortcut form for an Observable that produces a single value', function *() {
