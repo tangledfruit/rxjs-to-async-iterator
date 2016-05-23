@@ -54,7 +54,8 @@ class AsyncIterator {
       };
     };
 
-    while (!isDone) {
+    while (!isDone) { // eslint-disable-line no-unmodified-loop-condition
+                      // isDone gets modified in callTheCallback, above.
       yield consumeViaCallback();
     }
   }
@@ -62,7 +63,7 @@ class AsyncIterator {
   makeIter () {
     let result = this.iter();
 
-    result.nextValue = function *() {
+    result.nextValue = function * () {
       let item = yield this._iter.next();
       if (item.value === doneSentinel) {
         throw new Error('Expected onNext notification, got onCompleted instead');
@@ -70,14 +71,14 @@ class AsyncIterator {
       return item.value;
     }.bind(this);
 
-    result.shouldComplete = function *() {
+    result.shouldComplete = function * () {
       let item = yield this._iter.next();
       if (item.value !== doneSentinel) {
         throw new Error('Expected onCompleted notification, got onNext(' + item.value + ') instead');
       }
     }.bind(this);
 
-    result.shouldThrow = function *() {
+    result.shouldThrow = function * () {
       let item;
 
       try {
@@ -111,18 +112,18 @@ class AsyncIterator {
   }
 }
 
-Rx.Observable.prototype.shouldBeEmpty = function *() {
+Rx.Observable.prototype.shouldBeEmpty = function * () {
   yield this.toAsyncIterator().shouldComplete();
 };
 
-Rx.Observable.prototype.shouldGenerateOneValue = function *() {
+Rx.Observable.prototype.shouldGenerateOneValue = function * () {
   let iterator = this.toAsyncIterator();
   let value = yield iterator.nextValue();
   yield iterator.shouldComplete();
   return value;
 };
 
-Rx.Observable.prototype.shouldThrow = function *() {
+Rx.Observable.prototype.shouldThrow = function * () {
   let err = yield this.toAsyncIterator().shouldThrow();
   return err;
 };
