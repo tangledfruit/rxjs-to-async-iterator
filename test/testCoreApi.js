@@ -19,24 +19,24 @@ describe('rx-to-async-iterator', () => {
     expect(Rx.Observable.prototype.toAsyncIterator).to.be.a('function');
   });
 
-  it('can convert an empty Observable into an async iterator', function *() {
+  it('can convert an empty Observable into an async iterator', function * () {
     const iter = Rx.Observable.empty().toAsyncIterator();
     yield iter.shouldComplete();
   });
 
-  it('can convert an Observable that sends a single immediate value into an async iterator', function *() {
+  it('can convert an Observable that sends a single immediate value into an async iterator', function * () {
     const iter = Rx.Observable.just('blah').toAsyncIterator();
     expect(yield iter.nextValue()).to.equal('blah');
     yield iter.shouldComplete();
   });
 
-  it('can convert an Observable that sends a single deferred value into an async iterator', function *() {
+  it('can convert an Observable that sends a single deferred value into an async iterator', function * () {
     const iter = Rx.Observable.timer(200).take(1).toAsyncIterator();
     expect(yield iter.nextValue()).to.equal(0);
     yield iter.shouldComplete();
   });
 
-  it('should throw if onCompleted is sent when onNext was expected', function *() {
+  it('should throw if onCompleted is sent when onNext was expected', function * () {
     const iter = Rx.Observable.just('blah').toAsyncIterator();
     expect(yield iter.nextValue()).to.equal('blah');
 
@@ -52,7 +52,7 @@ describe('rx-to-async-iterator', () => {
     expect(didThrow).to.equal(true);
   });
 
-  it('should throw if onError is sent when onNext was expected', function *() {
+  it('should throw if onError is sent when onNext was expected', function * () {
     const iter = Rx.Observable.concat(
       Rx.Observable.just('blah'),
       Rx.Observable.throw(new Error('whoops'))).toAsyncIterator();
@@ -71,7 +71,7 @@ describe('rx-to-async-iterator', () => {
     expect(didThrow).to.equal(true);
   });
 
-  it('can convert an Observable that sends several immediate values into an async iterator', function *() {
+  it('can convert an Observable that sends several immediate values into an async iterator', function * () {
     const iter = Rx.Observable.from([0, 1, 2]).toAsyncIterator();
     expect(yield iter.nextValue()).to.equal(0);
     expect(yield iter.nextValue()).to.equal(1);
@@ -79,7 +79,7 @@ describe('rx-to-async-iterator', () => {
     yield iter.shouldComplete();
   });
 
-  it('can convert an Observable that sends several deferred values into an async iterator', function *() {
+  it('can convert an Observable that sends several deferred values into an async iterator', function * () {
     const iter = Rx.Observable.timer(200, 100).take(3).toAsyncIterator();
     expect(yield iter.nextValue()).to.equal(0);
     expect(yield iter.nextValue()).to.equal(1);
@@ -87,7 +87,7 @@ describe('rx-to-async-iterator', () => {
     yield iter.shouldComplete();
   });
 
-  it('should throw if onNext is sent when onCompleted is expected', function *() {
+  it('should throw if onNext is sent when onCompleted is expected', function * () {
     const iter = Rx.Observable.just(99).toAsyncIterator();
 
     let didThrow = false;
@@ -103,7 +103,7 @@ describe('rx-to-async-iterator', () => {
     expect(didThrow).to.equal(true);
   });
 
-  it('should throw if onError is sent when onCompleted was expected', function *() {
+  it('should throw if onError is sent when onCompleted was expected', function * () {
     const iter = Rx.Observable.concat(
       Rx.Observable.just('blah'),
       Rx.Observable.throw(new Error('whoops'))).toAsyncIterator();
@@ -122,12 +122,12 @@ describe('rx-to-async-iterator', () => {
     expect(didThrow).to.equal(true);
   });
 
-  it('can convert an Observable that sends an error immediately into an async iterator', function *() {
+  it('can convert an Observable that sends an error immediately into an async iterator', function * () {
     const iter = Rx.Observable.throw(new Error('expected failure')).toAsyncIterator();
     expect((yield iter.shouldThrow()).message).to.equal('expected failure');
   });
 
-  it('can convert an Observable that sends a deferred error into an async iterator', function *() {
+  it('can convert an Observable that sends a deferred error into an async iterator', function * () {
     const iter = Rx.Observable.concat(
       Rx.Observable.timer(200).take(1).filter(() => false),
       Rx.Observable.throw(new Error('deferred error'))).toAsyncIterator();
@@ -135,7 +135,7 @@ describe('rx-to-async-iterator', () => {
     expect((yield iter.shouldThrow()).message).to.equal('deferred error');
   });
 
-  it('should throw if onNext is sent when onError is expected', function *() {
+  it('should throw if onNext is sent when onError is expected', function * () {
     const iter = Rx.Observable.from([99, 402]).toAsyncIterator();
     expect(yield iter.nextValue()).to.equal(99);
 
@@ -152,7 +152,7 @@ describe('rx-to-async-iterator', () => {
     expect(didThrow).to.equal(true);
   });
 
-  it('should throw if onCompleted is sent when onError is expected', function *() {
+  it('should throw if onCompleted is sent when onError is expected', function * () {
     const iter = Rx.Observable.just(99).toAsyncIterator();
     expect(yield iter.nextValue()).to.equal(99);
 
@@ -170,11 +170,11 @@ describe('rx-to-async-iterator', () => {
   });
 
   describe('.shouldBeEmpty', () => {
-    it('should succeed for Observable.empty', function *() {
+    it('should succeed for Observable.empty', function * () {
       yield Rx.Observable.empty().shouldBeEmpty();
     });
 
-    it('should throw if any onNext is generated', function *() {
+    it('should throw if any onNext is generated', function * () {
       let didThrow = false;
 
       try {
@@ -186,7 +186,7 @@ describe('rx-to-async-iterator', () => {
       expect(didThrow).to.equal(true);
     });
 
-    it('should throw if any onError is generated', function *() {
+    it('should throw if any onError is generated', function * () {
       let didThrow = false;
 
       try {
@@ -200,11 +200,11 @@ describe('rx-to-async-iterator', () => {
   });
 
   describe('.shouldGenerateOneValue', () => {
-    it('should succeed if a single value is produced', function *() {
+    it('should succeed if a single value is produced', function * () {
       expect(yield Rx.Observable.just(47).shouldGenerateOneValue()).to.equal(47);
     });
 
-    it('should throw for Observable.empty', function *() {
+    it('should throw for Observable.empty', function * () {
       let didThrow = false;
 
       try {
@@ -216,7 +216,7 @@ describe('rx-to-async-iterator', () => {
       expect(didThrow).to.equal(true);
     });
 
-    it('should throw if two onNext events are generated', function *() {
+    it('should throw if two onNext events are generated', function * () {
       let didThrow = false;
 
       try {
@@ -228,7 +228,7 @@ describe('rx-to-async-iterator', () => {
       expect(didThrow).to.equal(true);
     });
 
-    it('should throw if any onError is generated', function *() {
+    it('should throw if any onError is generated', function * () {
       let didThrow = false;
 
       try {
@@ -242,12 +242,12 @@ describe('rx-to-async-iterator', () => {
   });
 
   describe('.shouldThrow', () => {
-    it('should provide access to the original Error object that was thrown', function *() {
+    it('should provide access to the original Error object that was thrown', function * () {
       const myError = new Error('this is what we throw');
       expect(yield Rx.Observable.throw(myError).shouldThrow()).to.equal(myError);
     });
 
-    it('should throw for Observable.empty', function *() {
+    it('should throw for Observable.empty', function * () {
       let didThrow = false;
 
       try {
@@ -259,7 +259,7 @@ describe('rx-to-async-iterator', () => {
       expect(didThrow).to.equal(true);
     });
 
-    it('should throw if an onNext event is generated', function *() {
+    it('should throw if an onNext event is generated', function * () {
       let didThrow = false;
 
       try {
@@ -272,7 +272,7 @@ describe('rx-to-async-iterator', () => {
     });
   });
 
-  it('should not get confused when observing two different Observables', function *() {
+  it('should not get confused when observing two different Observables', function * () {
     const b = new Rx.BehaviorSubject(51);
     const iterB = b.toAsyncIterator();
 
@@ -293,12 +293,12 @@ describe('rx-to-async-iterator', () => {
       expect(iter).to.respondTo('unsubscribe');
     });
 
-    it('should throw if called before first yield', function *() {
+    it('should throw if called before first yield', function * () {
       const timerIter = Rx.Observable.timer(100).toAsyncIterator();
       expect(() => timerIter.unsubscribe()).to.throw(/unsubscribing before first yield not allowed/);
     });
 
-    it('should cause subscription to be dropped', function *() {
+    it('should cause subscription to be dropped', function * () {
       let timerCount = -1;
 
       const countedTimer = Rx.Observable.timer(100, 100)
