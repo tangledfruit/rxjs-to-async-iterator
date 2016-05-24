@@ -32,8 +32,8 @@
     "co-mocha": "^1.1.2",
     "coveralls": "^2.11.9",
     "istanbul": "^0.4.3",
-    "mocha": "^2.4.5",
-    "semistandard": "^7.0.5"
+    "mocha": "^2.5.1",
+    "semistandard": "^8.0.0"
   },
   "engines": {
     "node": ">=4",
